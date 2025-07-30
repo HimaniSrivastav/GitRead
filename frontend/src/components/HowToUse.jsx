@@ -1,4 +1,5 @@
-const HowToUse = () => (
+export default function HowToUse () {
+  return (
   <div className="w-full max-w-2xl mx-auto mb-16">
     <div className="bg-blue-50 rounded-lg p-6 border border-blue-100">
       <h3 className="text-lg font-semibold text-blue-900 mb-4">How to use GitRead</h3>
@@ -23,3 +24,4 @@ const HowToUse = () => (
     </div>
   </div>
 );
+}
