@@ -17,27 +17,46 @@ export default function App() {
        console.log('Loading started');
       setCurrentRepoUrl(url);
       setSummary('');
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const mockSummary = `This repository appears to be a modern web application built with React and TypeScript. Here are the key highlights:
-
-**Purpose & Functionality:**
-The project is a full-stack application that provides user authentication, data visualization, and real-time updates. It includes both frontend and backend components with a clean, modern architecture.
-
-**Technology Stack:**
-- Frontend: React 18, TypeScript, Tailwind CSS
-- Backend: Node.js, Express, PostgreSQL
-- Testing: Jest, React Testing Library
-- Build Tools: Vite, ESLint, Prettier`;
-
-      setSummary(mockSummary);
-    } catch (error) {
+      // Make actual API call to the backend
+      const response = await fetch(`http://localhost:5000/api/analyze`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ repoUrl: url }),   
+      })
+      const data = await response.json();
+      if(!data.success) {
+        throw new Error(data.error || 'Failed to analyze repository');
+      }
+      setSummary(data.summary);
+    }catch (error) {
       console.error('Error:', error);
       setSummary('Error: Unable to analyze the repository. Please check the URL and try again.');
     } finally {
-      setIsLoading(false);
+      setIsLoading(false);  
+      
+
+//       // Simulate API call
+//       await new Promise(resolve => setTimeout(resolve, 2000));
+      
+//       const mockSummary = `This repository appears to be a modern web application built with React and TypeScript. Here are the key highlights:
+
+// **Purpose & Functionality:**
+// The project is a full-stack application that provides user authentication, data visualization, and real-time updates. It includes both frontend and backend components with a clean, modern architecture.
+
+// **Technology Stack:**
+// - Frontend: React 18, TypeScript, Tailwind CSS
+// - Backend: Node.js, Express, PostgreSQL
+// - Testing: Jest, React Testing Library
+// - Build Tools: Vite, ESLint, Prettier`;
+
+//       setSummary(mockSummary);
+//     } catch (error) {
+//       console.error('Error:', error);
+//       setSummary('Error: Unable to analyze the repository. Please check the URL and try again.');
+//     } finally {
+//       setIsLoading(false);
     }
   };
 
